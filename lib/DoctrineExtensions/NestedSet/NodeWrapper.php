@@ -1168,19 +1168,25 @@ class NodeWrapper implements Node
         $em->getConnection()->beginTransaction();
         try
         {
-            $qb = $em->createQueryBuilder()
-                ->delete(get_class($this->getNode()), 'n')
+            $results = $em->createQueryBuilder()
+                ->select('n')
+                ->from(get_class($this->getNode()), 'n')
                 ->where("n.$lftField >= ?1")
                 ->setParameter(1, $oldLft)
                 ->andWhere("n.$rgtField <= ?2")
                 ->setParameter(2, $oldRgt);
+
             if($this->hasManyRoots())
             {
-                $qb->andWhere("n.".$this->getRootFieldName()." = ?3")
+	    	    $results->andWhere("n.".$this->getRootFieldName()." = ?3")
                     ->setParameter(3, $oldRoot);
             }
-            $qb->getQuery()->execute();
-            $this->getManager()->removeNodes($oldLft, $oldRgt, $oldRoot);
+
+            $results = $results->getQuery()->getResult();
+            foreach($results as $result){
+                $em->remove($result);
+            }
+            $em->flush();
 
             // Close gap in tree
             $first = $oldRgt + 1;
