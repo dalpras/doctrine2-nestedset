@@ -265,7 +265,7 @@ class NodeWrapper implements Node
 				$q = $this->getManager()->addHintToQuery($q);
 			}
 			$results = $q->getResult();
-			
+
             $this->parent = $this->getManager()->wrapNode($results[0]);
         }
 
@@ -509,7 +509,7 @@ class NodeWrapper implements Node
         {
             for($i=0; $i<count($children); $i++)
             {
-                if($children[$i] == $this)
+                if($children[$i] === $this)
                 {
                     return ($i-1 < 0) ? null : $children[$i-1];
                 }
@@ -557,7 +557,7 @@ class NodeWrapper implements Node
         {
             for($i=0; $i<count($children); $i++)
             {
-                if($children[$i] == $this)
+                if($children[$i] === $this)
                 {
                     return ($i+1 >= count($children)) ? null : $children[$i+1];
                 }
@@ -633,7 +633,7 @@ class NodeWrapper implements Node
      */
     public function insertAsParentOf(NodeWrapper $node)
     {
-        if($node == $this)
+        if($node === $this)
         {
             throw new \InvalidArgumentException('Cannot insert node as a parent of itself');
         }
@@ -704,7 +704,7 @@ class NodeWrapper implements Node
      */
     public function insertAsPrevSiblingOf(NodeWrapper $node)
     {
-        if($node == $this)
+        if($node === $this)
         {
             throw new \InvalidArgumentException('Cannot insert node as a sibling of itself');
         }
@@ -743,7 +743,7 @@ class NodeWrapper implements Node
      */
     public function insertAsNextSiblingOf(NodeWrapper $node)
     {
-        if($node == $this)
+        if($node === $this)
         {
             throw new \InvalidArgumentException('Cannot insert node as a sibling of itself');
         }
@@ -782,7 +782,7 @@ class NodeWrapper implements Node
      */
     public function insertAsFirstChildOf(NodeWrapper $node)
     {
-        if($node == $this)
+        if($node === $this)
         {
             throw new \InvalidArgumentException('Cannot insert node as a child of itself');
         }
@@ -821,7 +821,7 @@ class NodeWrapper implements Node
      */
     public function insertAsLastChildOf(NodeWrapper $node)
     {
-        if($node == $this)
+        if($node === $this)
         {
             throw new \InvalidArgumentException('Cannot insert node as a child of itself');
         }
@@ -860,7 +860,7 @@ class NodeWrapper implements Node
      */
     public function moveAsPrevSiblingOf(NodeWrapper $node)
     {
-        if($node == $this)
+        if($node === $this)
         {
             throw new \InvalidArgumentException('Cannot move node as a sibling of itself');
         }
@@ -902,7 +902,7 @@ class NodeWrapper implements Node
      */
     public function moveAsNextSiblingOf(NodeWrapper $node)
     {
-        if($node == $this)
+        if($node === $this)
         {
             throw new \InvalidArgumentException('Cannot move node as a sibling of itself');
         }
@@ -944,7 +944,7 @@ class NodeWrapper implements Node
      */
     public function moveAsFirstChildOf(NodeWrapper $node)
     {
-        if($node == $this)
+        if($node === $this)
         {
             throw new \InvalidArgumentException('Cannot move node as a child of itself');
         }
@@ -986,7 +986,7 @@ class NodeWrapper implements Node
      */
     public function moveAsLastChildOf(NodeWrapper $node)
     {
-        if($node == $this)
+        if($node === $this)
         {
             throw new \InvalidArgumentException('Cannot move node as a child of itself');
         }
@@ -1107,7 +1107,7 @@ class NodeWrapper implements Node
     {
         if($node instanceof NodeWrapper)
         {
-            if($node == $this)
+            if($node === $this)
             {
                 throw new \InvalidArgumentException('Cannot insert node as a child of itself');
             }
@@ -1287,7 +1287,7 @@ class NodeWrapper implements Node
         {
             // Prepare left & right query
             $metadata = $em->getClassMetadata(get_class($this->getNode()));
-            $q = $em->createQueryBuilder()            
+            $q = $em->createQueryBuilder()
             ->update($metadata->rootEntityName, 'n')
             ->set("n.$field", "n.$field + :delta")
             ->setParameter('delta', $delta)
